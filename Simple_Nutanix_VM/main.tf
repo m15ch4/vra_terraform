@@ -1,5 +1,5 @@
 data "nutanix_image" "image" {
-  name        = "jammy-server-cloudimg-amd64-disk-kvm.img"
+  name = "jammy-server-cloudimg-amd64-disk-kvm.img"
 }
 
 data "nutanix_cluster" "cluster" {
@@ -20,7 +20,7 @@ resource "nutanix_virtual_machine" "vm" {
   disk_list {
     data_source_reference = {
       kind = "image"
-      uuid = nutanix_image.image.id
+      uuid = data.nutanix_image.image.id
     }
   }
 
