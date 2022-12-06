@@ -16,7 +16,7 @@ resource "nutanix_virtual_machine" "vm" {
   disk_list {
     data_source_reference = {
       kind = "image"
-      uuid = "ab088a65-dfc0-45b7-919c-936376290a42"
+      uuid = "a11bb6ac-3b16-4a75-b129-1e763f340b64"
     }
   }
 
