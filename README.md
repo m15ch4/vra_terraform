@@ -90,11 +90,11 @@ RUN cd $plugins \
 ENV TF_CLI_ARGS_init="-plugin-dir=$plugins"
 ```
 
-Note: Dockerfile can look different for different Terraform versions. Above ```Dockerfile``` is suitable for version 1.0 of TF.
-
+#### Note: 
+Dockerfile can look different for different Terraform versions. Above ```Dockerfile``` is suitable for version 1.0 of TF.
 Also keep in mind that paths for different providers will differ. 
 
-Build, tag and save container image.
+To build, tag and save container image execute following commands.
 ```
 docker build -t harbor.home.lab/library/terraform_vsphere:0.1
 ```
@@ -161,7 +161,7 @@ Notice last four lines of this file containing Harbor certificate (b64 encoded).
 
 ## Notes on Cloud Template
 
-When creating Cloud Template from Terraform mainfest vRA automatically finds variables in TF manifest and creates inputs in Cloud Templates yaml. 
+When creating Cloud Template from Terraform mainfest, vRA automatically finds variables in TF manifest and creates inputs in Cloud Templates yaml. 
 
 For example in ```Simple_vSphere_VM``` a set of variables are declared:
 ```
@@ -220,7 +220,7 @@ inputs:
         }
 ```
 
-You can tune automatically created inputs by adding constraints, default values, etc. just as for other Cloud Templates. Additionally for array, set and map variables like ```disks``` in this example that is by default recognized as array of strings you should change it to be rendered correctly in the deployment request form.
+You can tune automatically created inputs by adding constraints, default values, etc. just as for other Cloud Templates. Additionally for variables of type array, set and map, like ```disks``` in this example that is by default recognized as array of strings, you can/should change input definition to be rendered correctly in the deployment request form.
 
 ```
   disks:
