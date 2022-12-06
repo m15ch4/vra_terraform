@@ -10,7 +10,7 @@ provider "vsphere" {
 }
 
 
-##Data
+##Data (variables should be used here)
 
 data "vsphere_datacenter" "dc" {
   name = "Home-DC"
