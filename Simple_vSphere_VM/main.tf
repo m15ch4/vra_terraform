@@ -13,7 +13,7 @@ provider "vsphere" {
 ##Data
 
 data "vsphere_datacenter" "dc" {
-  name = "dc-01a"
+  name = "Home-DC"
 }
 
 data "vsphere_datastore" "datastore" {
@@ -22,12 +22,12 @@ data "vsphere_datastore" "datastore" {
 }
 
 data "vsphere_compute_cluster" "cluster" {
-  name          = "Cluster-01a"
+  name          = "vsan-cluster"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_network" "network" {
-  name          = "Overlay-Segment"
+  name          = "seg-overlay-151"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
