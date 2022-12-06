@@ -22,9 +22,13 @@ For offline environment we need:
 
 * the important part here is to have Harbor running on https. The certificate of Harbor will be used later while deploying TKC.
 
+For the purpose of this demo Harbor runs on https://harbor.home.lab
+
 ## Deploy remote source version control - Gitlab
 1. Prepare VM that will host GitLab
 2. Follow the manual to deploy GitLab (ce) application 
+
+For the purpose of this demo GitLab runs on https://gitlab.home.lab
 
 ## Web server configuration - Nginx
 Web server running on internet restricted environment is used to host Terraform binaries.
@@ -57,14 +61,15 @@ location /tf/ {
 Also keep in mind that ```root``` directive must be set for ```server```.
 
 ## Docker hosts
-Docker host that has internet access will be used to:
-1. pull image
+On Docker host that has access to the Internet do the following:
+
+1. Pull reference image:
 
 ``` docker pull projects.registry.vmware.com/vra/terraform:latest```
 
-2. build new image containing required provider(s)
+2. Build new image containing required provider(s)
 
-For this purpose you have to create Dockerfile that looks similar to the following one:
+For this purpose you have to create ```Dockerfile``` that looks similar to the following one:
 
 ```
 FROM projects.registry.vmware.com/vra/terraform:latest as final
@@ -85,14 +90,19 @@ RUN cd $plugins \
 ENV TF_CLI_ARGS_init="-plugin-dir=$plugins"
 ```
 
-Note: Dockerfile can look different for different Terraform versions. Above on is suitable for version 1.0 of TF.
+Note: Dockerfile can look different for different Terraform versions. Above ```Dockerfile``` is suitable for version 1.0 of TF.
+
+Also keep in mind that paths for different providers will differ. 
 
 Build, tag and save container image.
 ```
 docker build -t harbor.home.lab/library/terraform_vsphere:0.1
-
+```
+```
 docker save --output terraform_vsphere.tar harbor.home.lab/library/terraform_vsphere:0.1 
 ```
+
+You can verify if the providers are in correct directories using ```dive``` util available on https://github.com/wagoodman/dive.
 
 Now move the ```terraform_vsphere.tar``` file to docker host on internet restricted environment and load it.
 ```
@@ -104,4 +114,124 @@ To verify successful load of container image run ```docker image list```.
 Then you need to upload image to image registry.
 ```
 docker push harbor.home.lab/library/terraform_vsphere:0.1
+```
+
+## Kubernetes cluster
+vRA executes Terraform mainfests inside PODs that are started in k8s cluster using image prepared in previous step. As the prepared image doesn't contain Terraform binary, it will be downloaded from the web server that we already prepared.
+
+For this demo, TKC cluster will be used as container runtime. You can spinout TKC cluster using following specification - ```tkc1.yaml```.
+```
+apiVersion: run.tanzu.vmware.com/v1alpha3
+kind: TanzuKubernetesCluster
+metadata:
+  name: tkc1
+  namespace: dev-ns
+spec:
+  topology:
+    controlPlane:
+      replicas: 1
+      vmClass: best-effort-small
+      storageClass: vsan-default-storage-policy
+      tkr:
+        reference:
+          name: v1.21.6---vmware.1-tkg.1.b3d708a
+    nodePools:
+    - replicas: 2
+      name: worker
+      vmClass: best-effort-small
+      storageClass: vsan-default-storage-policy
+  settings:
+    storage:
+      classes: [vsan-default-storage-policy]
+      defaultClass: vsan-default-storage-policy
+    network:
+      cni:
+        name: antrea
+      pods:
+        cidrBlocks: ["192.0.5.0/16"]
+      services:
+        cidrBlocks: ["198.53.100.0/16"]
+      trust:
+        additionalTrustedCAs:
+          - name: harborCA
+            data: LS0tLS...Qo=
+```
+
+Notice last four lines of this file containing Harbor certificate (b64 encoded). This is required to make k8s nodes able to download container images from registry thats certificate is not trusted by default.
+
+## Notes on Cloud Template
+
+When creating Cloud Template from Terraform mainfest vRA automatically finds variables in TF manifest and creates inputs in Cloud Templates yaml. 
+
+For example in ```Simple_vSphere_VM``` a set of variables are declared:
+```
+variable "vsphere_server" {
+  description = "vSphere server"
+  type        = string
+}
+
+[...]
+
+variable "disks" {
+  type = set(object({
+    label = string
+    unit_number = number
+    size = number
+  }))
+  default = [
+    {
+      label = "diskA"
+      unit_number = 3
+      size = 3
+    },
+    {
+      label = "diskB"
+      unit_number = 4
+      size = 4      
+    }
+  ]
+}
+```
+
+and are respectively mapped to inputs in Cloud Template: 
+
+```
+inputs:
+  vsphere_server:
+    type: string
+    description: vSphere server
+
+[...]
+
+  disks:
+    type: array
+    default:
+      - |-
+        {
+        label="diskA"
+        unit_number=3
+        size=3
+        }
+      - |-
+        {
+        label="diskB"
+        unit_number=4
+        size=4
+        }
+```
+
+You can tune automatically created inputs by adding constraints, default values, etc. just as for other Cloud Templates. Additionally for array, set and map variables like ```disks``` in this example that is by default recognized as array of strings you should change it to be rendered correctly in the deployment request form.
+
+```
+  disks:
+    type: array
+    items:
+      type: object
+      properties:
+        label:
+          type: string
+        unit_number:
+          type: number
+        size:
+          type: number
 ```
