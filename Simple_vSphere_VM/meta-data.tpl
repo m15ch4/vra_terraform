@@ -4,7 +4,7 @@ hostname: ${hostname}
 network:
   version: 2
   ethernets:
-    ens192:
+    nics:
       match:
-        e*
+        name: ens*
       dhcp4: yes

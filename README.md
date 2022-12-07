@@ -235,3 +235,11 @@ You can tune automatically created inputs by adding constraints, default values,
         size:
           type: number
 ```
+
+## Customizing VMs using cloud-init and VMware datasource
+
+### DataSourceVMware
+
+All required details are available at https://cloudinit.readthedocs.io/en/latest/topics/datasources/vmware.html
+
+If you plan to use this datasource make sure that you use version >=21.3 of cloud-init

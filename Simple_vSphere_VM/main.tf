@@ -71,6 +71,7 @@ data "template_file" "user-data" {
   vars = {
     hostname = var.vm_name
     ssh_key_list = var.ssh_keys
+    os_username = var.os_username
   }
 }
 data "template_cloudinit_config" "user-data" {

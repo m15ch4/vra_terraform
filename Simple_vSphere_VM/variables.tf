@@ -31,7 +31,13 @@ variable "vm_name" {
 variable "template" {
   description = "VM Template"
   type        = string
-  default = "debiantemplate"
+  default = "debian-template-cloudinit"
+}
+
+variable "os_username" {
+  description = "New user name"
+  type = string
+  default = "micze"
 }
 
 variable "ssh_keys" {

@@ -1,8 +1,8 @@
 #cloud-config
 
 users:
-  - name: test
-    primary_group: test
+  - name: ${os_username}
+    primary_group: ${os_username}
     sudo: ALL=(ALL) NOPASSWD:ALL
     groups: sudo, wheel
     ssh_import_id: None
