@@ -130,20 +130,24 @@ resource "vsphere_virtual_machine" "vm01" {
     template_uuid = data.vsphere_virtual_machine.template.id
   }
 
- connection {
-    type     = "ssh"
-    user     = "micze"
-    password = "VMware1!"
-    host     = vsphere_virtual_machine.vm01.default_ip_address
- }
+## Below commented remote-exec provisioner wont work with password authentication
+## It should be fixed to use private key to connect through SSH
 
- provisioner "remote-exec" {
-   inline = [
-    "sleep 60",
-      "echo test > /tmp/test.txt"
-      
-    ]
- }
+# connection {
+#    type     = "ssh"
+#    user     = "micze"
+#    password = "VMware1!"
+#    host     = vsphere_virtual_machine.vm01.default_ip_address
+# }
+
+# provisioner "remote-exec" {
+#   inline = [
+#    "sleep 60",
+#      "echo test > /tmp/test.txt"      
+#    ]
+# }
+
+## guestinfo is read by cloud-init
 
   extra_config = {
     "guestinfo.metadata"          = base64encode(data.template_file.meta-data.rendered)
@@ -157,6 +161,6 @@ resource "vsphere_virtual_machine" "vm01" {
  ##Output
 
 output "ip" {
-value = vsphere_virtual_machine.vm01.default_ip_address
-
+  value = vsphere_virtual_machine.vm01.default_ip_address
 }
+
