@@ -144,7 +144,7 @@ resource "vsphere_virtual_machine" "vm01" {
   extra_config = {
     "guestinfo.metadata"          = base64encode(data.template_file.meta-data.rendered)
     "guestinfo.metadata.encoding" = "base64"
-    "guestinfo.userdata"          = base64encode(data.template_file.cloud-init.rendered)
+    "guestinfo.userdata"          = base64encode(data.template_file.user-data.rendered)
     "guestinfo.userdata.encoding" = "base64"
   }
 
