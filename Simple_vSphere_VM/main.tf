@@ -47,21 +47,39 @@ data "vsphere_virtual_machine" "template" {
 }
 
 ##Cloud-init
-data "template_file" "cloud-init" {
-  template = file("cloud-init.tpl")
+data "template_file" "meta-data" {
+  template = file("meta-data.tpl")
 
   vars = {
     hostname = var.vm_name
     ssh_key_list = var.ssh_keys
   }
 }
-data "template_cloudinit_config" "cloud-init" {
+data "template_cloudinit_config" "meta-data" {
   gzip          = true
   base64_encode = true
 
   part {
     content_type = "text/cloud-config"
-    content      = data.template_file.cloud-init.rendered
+    content      = data.template_file.meta-data.rendered
+  }
+}
+
+data "template_file" "user-data" {
+  template = file("user-data.tpl")
+
+  vars = {
+    hostname = var.vm_name
+    ssh_key_list = var.ssh_keys
+  }
+}
+data "template_cloudinit_config" "user-data" {
+  gzip          = true
+  base64_encode = true
+
+  part {
+    content_type = "text/cloud-config"
+    content      = data.template_file.user-data.rendered
   }
 }
 
@@ -123,10 +141,11 @@ resource "vsphere_virtual_machine" "vm01" {
     ]
  }
 
-  vapp {
-    properties = {
-    "guestinfo.userdata" = base64gzip(data.template_file.cloud-init.rendered)
-        }
+  extra_config = {
+    "guestinfo.metadata"          = base64encode(data.template_file.meta-data.rendered)
+    "guestinfo.metadata.encoding" = "base64"
+    "guestinfo.userdata"          = base64encode(data.template_file.cloud-init.rendered)
+    "guestinfo.userdata.encoding" = "base64"
   }
 
 }

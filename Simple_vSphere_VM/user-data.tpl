@@ -1,4 +1,4 @@
-hostname: ${hostname}
+#cloud-config
 
 users:
   - name: test
