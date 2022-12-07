@@ -123,7 +123,13 @@ resource "vsphere_virtual_machine" "vm01" {
     ]
  }
 
- }
+  vapp {
+    properties = {
+    "guestinfo.userdata" = base64gzip(data.template_file.cloud-init.rendered)
+        }
+  }
+
+}
 
  ##Output
 
