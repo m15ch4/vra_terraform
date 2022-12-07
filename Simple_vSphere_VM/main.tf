@@ -121,6 +121,9 @@ resource "vsphere_virtual_machine" "vm01" {
     }
   }
 
+  cdrom {
+    client_device = true
+  }
 
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
