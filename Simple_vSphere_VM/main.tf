@@ -1,5 +1,15 @@
 ##Provider
 
+terraform {
+  required_providers {
+    vsphere = {
+      source = "hashicorp/vsphere"
+      version = "2.2.0"
+    }
+  }
+}
+
+
 provider "vsphere" {
   user           = var.vsphere_user
   password       = var.vsphere_password
@@ -34,6 +44,25 @@ data "vsphere_network" "network" {
 data "vsphere_virtual_machine" "template" {
   name          = var.template
   datacenter_id = data.vsphere_datacenter.dc.id
+}
+
+##Cloud-init
+data "template_file" "cloud-init" {
+  template = file("cloud-init.tpl")
+
+  vars = {
+    hostname = var.vm_name
+    ssh_key_list = var.ssh_keys
+  }
+}
+data "template_cloudinit_config" "cloud-init" {
+  gzip          = true
+  base64_encode = true
+
+  part {
+    content_type = "text/cloud-config"
+    content      = data.template_file.cloud-init.rendered
+  }
 }
 
 ##vSphere VMs
