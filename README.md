@@ -243,3 +243,15 @@ You can tune automatically created inputs by adding constraints, default values,
 All required details are available at https://cloudinit.readthedocs.io/en/latest/topics/datasources/vmware.html
 
 If you plan to use this datasource make sure that you use version >=21.3 of cloud-init
+
+To verify if data is available through datasource 
+
+```vmware-rpctool "info-get guestinfo.metadata" | base64 -d | gunzip```
+
+## Other topics to lab
+
+### Dynamic nics
+https://stackoverflow.com/questions/72650455/iterating-network-interfaces-in-vsphere-provider-with-terraform
+
+https://discuss.hashicorp.com/t/terraform-vsphere-interate-multiple-nested-objects-of-interfaces-with-for-each/32875
+
