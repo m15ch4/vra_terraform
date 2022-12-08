@@ -23,6 +23,11 @@ variable "cpus" {
   default = 2
 }
 
+variable "portgroup" {
+  description = "Network portgroup"
+  type = string
+}
+
 variable "vm_name" {
   description = "VM Name"
   type        = string

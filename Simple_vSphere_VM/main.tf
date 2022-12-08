@@ -37,7 +37,7 @@ data "vsphere_compute_cluster" "cluster" {
 }
 
 data "vsphere_network" "network" {
-  name          = "seg-overlay-151"
+  name          = var.portgroup
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
