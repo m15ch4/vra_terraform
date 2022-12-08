@@ -54,5 +54,5 @@ resource "nutanix_virtual_machine" "vm" {
     subnet_uuid = data.nutanix_subnet.subnet.id
   }
 
-  guest_customization_cloud_init_meta_data = base64encode(data.template_file.user-data.rendered)
+  guest_customization_cloud_init_user_data = base64encode(data.template_file.user-data.rendered)
 }
