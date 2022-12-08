@@ -1,5 +1,6 @@
 ##Provider
 
+# vsphere provider
 terraform {
   required_providers {
     vsphere = {
@@ -8,7 +9,6 @@ terraform {
     }
   }
 }
-
 
 provider "vsphere" {
   user           = var.vsphere_user
