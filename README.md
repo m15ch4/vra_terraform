@@ -257,3 +257,9 @@ https://stackoverflow.com/questions/72650455/iterating-network-interfaces-in-vsp
 
 https://discuss.hashicorp.com/t/terraform-vsphere-interate-multiple-nested-objects-of-interfaces-with-for-each/32875
 
+## TODO
+
+1. Dynamic disks for Nutanix provider
+2. Describe container image tagging convention
+3. Network traffic (img + description)
+3.1. Source IP for communication initiated from POD (for PKS cluster)
