@@ -102,6 +102,8 @@ docker build -t harbor.home.lab/library/terraform_vsphere:0.1
 docker save --output terraform_vsphere.tar harbor.home.lab/library/terraform_vsphere:0.1 
 ```
 
+DESCRIBE TAG
+
 You can verify if the providers are in correct directories using ```dive``` util available on https://github.com/wagoodman/dive.
 
 Now move the ```terraform_vsphere.tar``` file to docker host on internet restricted environment and load it.
