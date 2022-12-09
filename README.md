@@ -257,6 +257,10 @@ https://stackoverflow.com/questions/72650455/iterating-network-interfaces-in-vsp
 
 https://discuss.hashicorp.com/t/terraform-vsphere-interate-multiple-nested-objects-of-interfaces-with-for-each/32875
 
+### Network communication 
+
+<img align="left" width="159px" src="images/communication_diagram.png">
+
 ## TODO
 
 1. Dynamic disks for Nutanix provider
