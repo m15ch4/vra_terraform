@@ -250,16 +250,16 @@ To verify if data is available through datasource
 
 ```vmware-rpctool "info-get guestinfo.metadata" | base64 -d | gunzip```
 
+### Network communication 
+
+<img width="600px" src="images/communication_diagram.png">
+
 ## Other topics to lab
 
 ### Dynamic nics
 https://stackoverflow.com/questions/72650455/iterating-network-interfaces-in-vsphere-provider-with-terraform
 
 https://discuss.hashicorp.com/t/terraform-vsphere-interate-multiple-nested-objects-of-interfaces-with-for-each/32875
-
-### Network communication 
-
-<img width="600px" src="images/communication_diagram.png">
 
 ## TODO
 
