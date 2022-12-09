@@ -259,7 +259,7 @@ https://discuss.hashicorp.com/t/terraform-vsphere-interate-multiple-nested-objec
 
 ### Network communication 
 
-<img align="left" width="159px" src="images/communication_diagram.png">
+<img width="600px" src="images/communication_diagram.png">
 
 ## TODO
 
