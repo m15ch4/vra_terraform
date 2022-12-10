@@ -266,7 +266,7 @@ To verify if data is available through datasource
 
 ```vmware-rpctool "info-get guestinfo.metadata" | base64 -d | gunzip```
 
-### Network communication 
+## Network communication between components required for this integration
 
 <img width="600px" src="images/communication_diagram.png">
 
