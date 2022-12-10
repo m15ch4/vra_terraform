@@ -103,17 +103,17 @@ docker save --output terraform_vsphere.tar harbor.home.lab/library/terraform_vsp
 ```
 
 
-#### Note:
-The structure of the tag assigned to image when executing ```docker build``` command is as follows:
-
-```registry.example.com[:port]/project/imagename:version```
-
-where: 
-* registry.example.com - fqdn of container registry that will be used to store container image
-* port - optionally you can specify port used by container registry
-* project - project name in harbor (default project is called ```library```)
-* imagename - name of the image
-* version - version of the image
+>#### Note:
+>The structure of the tag assigned to image when executing ```docker build``` command is as follows:
+>
+>```registry.example.com[:port]/project/imagename:version```
+>
+>where: 
+>* registry.example.com - fqdn of container registry that will be used to store container image
+>* port - optionally you can specify port used by container registry
+>* project - project name in harbor (default project is called ```library```)
+>* imagename - name of the image
+>* version - version of the image
 
 
 You can verify if the providers are in correct directories using ```dive``` util available on https://github.com/wagoodman/dive.
