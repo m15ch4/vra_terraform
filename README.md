@@ -104,7 +104,7 @@ docker build -t harbor.home.lab/library/terraform_vsphere:0.1
 docker save --output terraform_vsphere.tar harbor.home.lab/library/terraform_vsphere:0.1 
 ```
 
-~~
+~~~~
 #### Note:
 The structure of the tag assigned to image when executing ```docker build``` command is as follows:
 
@@ -116,7 +116,7 @@ where:
 * project - project name in harbor (default project is called ```library```)
 * imagename - name of the image
 * version - version of the image
-~~
+~~~~
 
 You can verify if the providers are in correct directories using ```dive``` util available on https://github.com/wagoodman/dive.
 
