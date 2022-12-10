@@ -90,18 +90,16 @@ RUN cd $plugins \
 ENV TF_CLI_ARGS_init="-plugin-dir=$plugins"
 ```
 
->#### Note: 
->Dockerfile can look different for different Terraform versions. Above ```Dockerfile``` is suitable for version 1.0 of TF.
->Also keep in mind that paths for different providers will differ. 
+If you want to include multiple profiders in your image you have to duplicate `RUN ...` command providing correct download paths for other provider and directory where to put these providers.
 
-To build, tag and save container image execute following commands.
+>#### Note: 
+>Dockerfile can look different for different Terraform versions. Above ```Dockerfile``` is suitable for version 1.0 of TF. This is because different Terraform versions support different set of flags (eg. Terraform 1.0 doesn't support `--get-plugins` flag and version 0.12 supports it).
+>Also keep in mind that paths for different providers will differ and it is based on name of the provider and its maintainer (eg. hashicorp, nutanix, etc). 
+
+Build and tag container image execute following command.
 ```
 docker build -t harbor.home.lab/library/terraform_vsphere:0.1
 ```
-```
-docker save --output terraform_vsphere.tar harbor.home.lab/library/terraform_vsphere:0.1 
-```
-
 
 >#### Note:
 >The structure of the tag assigned to image when executing ```docker build``` command is as follows:
@@ -115,25 +113,31 @@ docker save --output terraform_vsphere.tar harbor.home.lab/library/terraform_vsp
 >* imagename - name of the image
 >* version - version of the image
 
+3. Optionally you can verify if the providers are in correct directories by reviewing filesystem structure of the image using `dive` util available on https://github.com/wagoodman/dive.
 
-You can verify if the providers are in correct directories by reviewing filesystem structure of the image using `dive` util available on https://github.com/wagoodman/dive.
+4. Save image to file with following command:
+```
+docker save --output terraform_vsphere.tar harbor.home.lab/library/terraform_vsphere:0.1 
+```
 
-Now move the ```terraform_vsphere.tar``` file to docker host on internet restricted environment and load it.
+5. Transfer ```terraform_vsphere.tar``` file to docker host on internet restricted environment and load it. Following commands have to be executed on docker host that has no internet access.
 ```
 docker load --input terraform_vsphere.tar
 ```
 
 To verify successful load of container image run ```docker image list```.
 
-Then you need to upload image to image registry.
+6. Upload image to image registry.
 ```
 docker push harbor.home.lab/library/terraform_vsphere:0.1
 ```
 
+As a result you have container image with Terraform providers embedded into it. Image is upladed to container registry and can be used to create Kubernetes PODs.
+
 ## Kubernetes cluster
 vRA executes Terraform mainfests inside PODs that are started in k8s cluster using image prepared in previous step. As the prepared image doesn't contain Terraform binary, it will be downloaded from the web server that we already prepared.
 
-For this demo, TKC cluster will be used as container runtime. You can spinout TKC cluster using following specification - ```tkc1.yaml```.
+For this demo, TKC cluster will be used as container runtime. You can create TKC cluster using following spec file - ```tkc1.yaml```.
 ```
 apiVersion: run.tanzu.vmware.com/v1alpha3
 kind: TanzuKubernetesCluster
