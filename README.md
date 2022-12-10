@@ -268,7 +268,7 @@ To verify if data is available through datasource
 
 ## Network communication between components required for this integration
 
-<img width="600px" src="images/communication_diagram.png">
+<img width="750px" src="images/communication_diagram.png">
 
 ## Other topics to lab
 
