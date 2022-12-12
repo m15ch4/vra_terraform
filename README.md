@@ -272,9 +272,18 @@ To verify if data is available through datasource
 
 ### Source IP address for communication initiated from K8s PODs
 
-When it comes to outgoing communication between PODs and other components of the environment (e.g. web host, vCenter) the source addresses of the PODs are SNATed by NSX-T tier-1 router to IP address that is specific for namespace in which PODs are created in. 
+TKGi with NSX-T can be deployed in NAT mode and No-NAT mode. As NAT mode is recommended for most deployments of TKGi the assumption is that this mode is used.
 
+When it comes to outgoing communication between PODs and other components of the environment (e.g. web host, vCenter, Nutanix Prism Central, etc.) the source addresses of the PODs are SNATed by NSX-T tier-0 router to IP address that is specific for namespace in which PODs are created in. SNAT rule is created on NSX-T when creating namespace.
+
+You can find out SNAT IP address by reviewing SNAT rules in your NSX-T UI. This IP address must to be used when configuring external firewalls to enable communication between PODs and external components of the solution.
+
+You point namespace to be used while configuring Terraform integration:
 <img width="750px" src="images/namespace.png">
+
+More detailed description of TKGi SNAT/No-SNAT mode:
+* https://blogs.vmware.com/networkvirtualization/2019/06/kubernetes-and-vmware-enterprise-pks-networking-security-operations-with-nsx-t-data-center.html/
+* https://vxplanet.com/2020/02/28/nsx-t-shared-tier-1-architecture-in-vmware-enterprise-pks/
 
 ## Other topics to lab
 
