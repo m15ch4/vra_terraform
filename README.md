@@ -270,6 +270,12 @@ To verify if data is available through datasource
 
 <img width="750px" src="images/communication_diagram.png">
 
+### Source IP address for communication initiated from K8s PODs
+
+When it comes to outgoing communication between PODs and other components of the environment (e.g. web host, vCenter) the source addresses of the PODs are SNATed by NSX-T tier-1 router to IP address that is specific for namespace in which PODs are created in. 
+
+<img width="750px" src="images/namespace.png">
+
 ## Other topics to lab
 
 ### Dynamic nics
@@ -280,6 +286,6 @@ https://discuss.hashicorp.com/t/terraform-vsphere-interate-multiple-nested-objec
 ## TODO
 
 1. Dynamic disks for Nutanix provider
-2. Describe container image tagging convention
-3. Network traffic (img + description)
-3.1. Source IP for communication initiated from POD (for PKS cluster)
+2. (v) Describe container image tagging convention
+3. (v) Network traffic (img + description)
+3.1. (v) Source IP for communication initiated from POD (for PKS cluster)
