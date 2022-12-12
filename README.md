@@ -81,10 +81,10 @@ RUN mkdir -m 777 -p $plugins
 # Download and unzip all required provider plug-ins from hashicorp to provider directory
 RUN cd $plugins \
     && mkdir -p registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/ \
-    && cd registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/
+    && cd registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/ \
     && wget -q https://releases.hashicorp.com/terraform-provider-vsphere/2.2.0/terraform-provider-vsphere_2.2.0_linux_amd64.zip \
     && unzip *.zip \
-    && rm *.zip \
+    && rm *.zip
   
 # For "terraform init" configure terraform CLI to use provider plug-in directory and not download from internet
 ENV TF_CLI_ARGS_init="-plugin-dir=$plugins"
