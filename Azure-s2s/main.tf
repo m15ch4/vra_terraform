@@ -7,7 +7,7 @@ module "rg" {
 }
 
 module "vnet" {
-  source = "git::https://github.com/m15ch4/repo.git//modules/azure_virtual_machine/"
+  source = "git::https://github.com/m15ch4/vra_terraform.git//modules/azure_virtual_machine/"
   vnet-name = var.vnet-name
   location            = module.rg.resource_group_location
   resource_group_name = module.rg.resource_group_name
