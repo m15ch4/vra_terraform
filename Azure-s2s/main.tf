@@ -2,8 +2,8 @@
 
 module "rg" {
   source = "./modules/resource_group"
-  rg-name = "rg1"
-  rg-location = "westus2"
+  rg-name = var.rg-name
+  rg-location = var.rg-location
 }
 
 module "vnet" {
