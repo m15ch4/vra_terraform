@@ -16,7 +16,7 @@ module "vnet" {
 resource "azurerm_subnet" "subnet" {
   name                 = var.subnet-name
   address_prefixes     = ["10.0.1.0/24"]
-  virtual_network_name = azurerm_virtual_network.vnet.name
+  virtual_network_name = module.vnet.virtual_network_name
   resource_group_name  = module.rg.resource_group_name
 }
 
