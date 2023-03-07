@@ -27,7 +27,7 @@ variable "tenant-id" {
 }
 
 variable "client-id" {
-  description = "Tenant ID"
+  description = "Client ID"
   type = string
 }
 

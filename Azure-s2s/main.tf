@@ -8,9 +8,9 @@ module "rg" {
 
 module "vnet" {
   source = "git::https://github.com/m15ch4/vra_terraform.git//modules/azure_virtual_network"
-  vnet-name = var.vnet-name
-  location            = module.rg.resource_group_location
-  resource_group_name = module.rg.resource_group_name
+  vnet-name   = var.vnet-name
+  rg-location    = module.rg.resource_group_location
+  rg-name     = module.rg.resource_group_name
 }
 
 resource "azurerm_subnet" "subnet" {
